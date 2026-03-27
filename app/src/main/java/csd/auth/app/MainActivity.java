@@ -1,4 +1,4 @@
-package com.example.androidappdevelopmentproject;
+package csd.auth.app;
 
 import android.os.Bundle;
 
