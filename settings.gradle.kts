@@ -22,6 +22,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Android(App Development Project"
+rootProject.name = "csd.auth.app"
 include(":app")
- 
