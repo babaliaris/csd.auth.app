@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "985463072198",
+    "project_id": "csd-auth-app-backend",
+    "storage_bucket": "csd-auth-app-backend.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:985463072198:android:5ecff153c49b30f4327ec7",
+        "android_client_info": {
+          "package_name": "csd.auth.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSk1VCGfdxz7dM8dCE2I2boqzc0ReMUSg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

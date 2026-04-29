@@ -1,0 +1,287 @@
+package csd.auth.app.api;
+import androidx.annotation.NonNull;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.List;
+import java.util.Objects;
+import csd.auth.app.api.models.UserModel;
+import csd.auth.app.api.models.ExchangeModel;
+
+
+/**
+ * @author Nikolaos Bampaliaris
+ * @version 1.0
+ *
+ * This is the firebase manager class.
+ * It's a simple-to-use singleton class that provides
+ * access to the Firebase Authentication and Firestore
+ * services. All firebase operations have been abstracted
+ * to make the code more readable and maintainable and most
+ * importantly "Dead Simple To Use" across the entire project.
+ */
+public class FirebaseManager
+{
+    /**The singleton instance of this class. */
+    private static FirebaseManager instance;
+
+    /**The Firebase Authentication service. */
+    private final FirebaseAuth auth;
+
+    /**The Firebase Firestore service. */
+    private final FirebaseFirestore db;
+
+    /**The logged-in user's UUID. */
+    private String user_uid;
+
+    /**
+     * The default constructor.
+     */
+    private FirebaseManager()
+    {
+        auth    = FirebaseAuth.getInstance();
+        db      = FirebaseFirestore.getInstance();
+
+        // If the app dies or somehow this singleton instances gets destroyed,
+        // once the app resumes or re-opens, Google's firebase service "remembers" the
+        // login session. Here we make sure to capture it to "log in back" automatically.
+        if (auth.getCurrentUser() != null)
+        {
+            this.user_uid = auth.getCurrentUser().getUid();
+        }
+    }
+
+    /**
+     * Singleton pattern. We create only one instance of this class
+     * and use it across the entire application to communicate
+     * with Firebase in the easiest way possible!
+     *
+     * @return The singleton instance of this class.
+     */
+    public static synchronized FirebaseManager getInstance()
+    {
+        // Create the instance if it doesn't exist.
+        if (instance == null)
+        {
+            instance = new FirebaseManager();
+        }
+
+        // Return the instance.
+        return instance;
+    }
+
+    /**
+     * Registers a new user with the given email and password.
+     *
+     * @param email The user's email address.
+     * @param password The user's password.
+     * @param callback A callback interface to handle the async result of the operation.
+     */
+    public void registerUser(
+            @NonNull String email,
+            @NonNull String password,
+            @NonNull ApiResultInterface<String> callback
+    )
+    {
+        // Check if the email and password are not empty.
+        if ( email.isEmpty() || password.isEmpty() )
+        {
+            callback.onFailure(
+                    ApiErrorE.REQUIRED_PARAMS_MISSING,
+                    "Email and password cannot be empty."
+            );
+            return;
+        }
+
+        // Create a new user.
+        this.auth.createUserWithEmailAndPassword(email, password)
+        .addOnCompleteListener(task ->
+        {
+            // Success.
+            if (task.isSuccessful())
+            {
+                // Get the UUID of the current user (who just registered).
+                String uid = Objects.requireNonNull(this.auth.getCurrentUser()).getUid();
+
+                // Create the new user object.
+                UserModel new_user = new UserModel(email);
+
+                // And a new document in the "users" collection using the user's AUTH uuid.
+                this.db.collection("users").document(uid)
+                .set(new_user)
+                .addOnSuccessListener(aVoid -> callback.onSuccess(uid))
+                .addOnFailureListener(e -> callback.onFailure(ApiErrorE.FIREBASE_FIRESTORE_ERROR, e.getMessage()));
+            }
+
+            // Failure.
+            else
+            {
+                callback.onFailure(
+                        ApiErrorE.FIREBASE_AUTH_ERROR,
+                        Objects.requireNonNull(task.getException()).getMessage()
+                );
+            }
+        });
+    }
+
+    /**
+     * Logs in a user with the given email and password.
+     *
+     * @param email The user's email address.
+     * @param password The user's password.
+     * @param callback A callback interface to handle the async result of the operation.
+     */
+    public void loginUser(
+            @NonNull String email,
+            @NonNull String password,
+            @NonNull ApiResultInterface<String> callback
+    )
+    {
+        // Check if the email and password are not empty.
+        if ( email.isEmpty() || password.isEmpty() )
+        {
+            callback.onFailure(
+                    ApiErrorE.REQUIRED_PARAMS_MISSING,
+                    "Email and password cannot be empty."
+            );
+            return;
+        }
+
+        // Attempt to log in the user.
+        this.auth.signInWithEmailAndPassword(email, password)
+        .addOnCompleteListener(task ->
+        {
+            if (task.isSuccessful())
+            {
+                // Get the logged in user's uuid.
+                String uid = Objects.requireNonNull(this.auth.getCurrentUser()).getUid();
+
+                // Store it in this instance.
+                this.user_uid = uid;
+
+                // Pass it to the caller.
+                callback.onSuccess(uid);
+            }
+
+            else
+            {
+                callback.onFailure(
+                        ApiErrorE.FIREBASE_AUTH_ERROR,
+                        Objects.requireNonNull(task.getException()).getMessage());
+            }
+        });
+    }
+
+
+    /**
+     * Logs out the current user.
+     *
+     * @param callback A callback interface to handle the async result of the operation.
+     */
+    public void logoutUser(
+            @NonNull ApiResultInterface<Void> callback
+    )
+    {
+        // Sign out the current user and set the cached user uuid to null
+        // to prevent developers from accidentally using it at any
+        // api call.
+        this.auth.signOut();
+        this.user_uid = null;
+
+        // Pass null to the caller, so they know that the operation was finished.
+        callback.onSuccess(null);
+    }
+
+
+    /**
+     * Get the current user's information.
+     *
+     * @param callback A callback interface to handle the async result of the operation.
+     */
+    public void getMyProfile(
+            @NonNull ApiResultInterface<UserModel> callback
+    )
+    {
+        // Check that the user is logged in.
+        if (this.user_uid == null)
+        {
+            callback.onFailure(
+                    ApiErrorE.USER_NOT_LOGGED_IN,
+                    "User is not logged in."
+            );
+            return;
+        }
+
+        // Get the user's document by his UUID.
+        this.db.collection("users").document(this.user_uid).get()
+        .addOnSuccessListener(documentSnapshot ->
+        {
+            UserModel user = documentSnapshot.toObject(UserModel.class);
+            callback.onSuccess(user);
+        })
+        .addOnFailureListener(e -> callback.onFailure(ApiErrorE.FIREBASE_FIRESTORE_ERROR, e.getMessage()));
+    }
+
+    /**
+     * Get all my exchanges.
+     *
+     * @param callback A callback interface to handle the async result of the operation.
+     */
+    public void getMyExchanges(
+            @NonNull ApiResultInterface<List<ExchangeModel>> callback
+    )
+    {
+        // Check that the user is logged in.
+        if (this.user_uid == null)
+        {
+            callback.onFailure(
+                    ApiErrorE.USER_NOT_LOGGED_IN,
+                    "User is not logged in."
+            );
+            return;
+        }
+
+        // Get all the user's exchanges using his UUID against the "owner_user_uuid" field.
+        this.db.collection("exchanges")
+        .whereEqualTo("owner_user_uuid", this.user_uid)
+        .get()
+        .addOnSuccessListener(queryDocumentSnapshots ->
+        {
+            List<ExchangeModel> list = queryDocumentSnapshots.toObjects(ExchangeModel.class);
+            callback.onSuccess(list);
+        })
+        .addOnFailureListener(e -> callback.onFailure(ApiErrorE.FIREBASE_FIRESTORE_ERROR, e.getMessage()));
+    }
+
+
+    /**
+     * Get all the exchanges I owe.
+     *
+     * @param callback A callback interface to handle the async result of the operation.
+     */
+    public void getExchangesIOwe(
+            @NonNull ApiResultInterface<List<ExchangeModel>> callback
+    )
+    {
+        // Check that the user is logged in.
+        if (this.user_uid == null)
+        {
+            callback.onFailure(
+                    ApiErrorE.USER_NOT_LOGGED_IN,
+                    "User is not logged in."
+            );
+            return;
+        }
+
+        // Get all the exchanges the user owes using his UUID against the "debt_user_uuid" field.
+        this.db.collection("exchanges")
+        .whereEqualTo("debt_user_uuid", this.user_uid)
+        .get()
+        .addOnSuccessListener(queryDocumentSnapshots -> {
+            List<ExchangeModel> list = queryDocumentSnapshots.toObjects(ExchangeModel.class);
+            callback.onSuccess(list);
+        })
+        .addOnFailureListener(e -> callback.onFailure(ApiErrorE.FIREBASE_FIRESTORE_ERROR, e.getMessage()));
+    }
+}
