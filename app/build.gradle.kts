@@ -36,6 +36,11 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
+    // Enable view binding to avoid using findViewById()
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {

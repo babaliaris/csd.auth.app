@@ -18,4 +18,35 @@
     <string name="to">To</string>
     <string name="type">Type</string>
 
+    <!--Bampaliaris SPACE (For git conflicts distinguishing)-->
+
+    <!--Register Activity-->
+    <string name="register_title">Registration Form</string>
+    <string name="register_email_placeholder">Enter your email address</string>
+    <string name="register_pass_placeholder">Enter a password</string>
+    <string name="register_repass_placeholder">Repeat the password</string>
+    <string name="register_btn">Register</string>
+    <string name="register_back_to_login_btn">Login</string>
+    <string name="register_email_content_desc">The email address icon</string>
+    <string name="register_pass_content_desc">The password icon</string>
+    <string name="register_repass_content_desc">The repeat password icon</string>
+    <string name="register_email_required">The email address is required</string>
+    <string name="register_pass_required">The password is required</string>
+    <string name="register_pass_min_length">The password must be at least 6 characters</string>
+    <string name="register_pass_mismatch">The passwords to not match</string>
+    <string name="register_success_msg">The registration was successful</string>
+
+    <!--Login Activity-->
+    <string name="login_title">Login</string>
+    <string name="login_email_placeholder">Enter your email address</string>
+    <string name="login_pass_placeholder">Enter a password</string>
+    <string name="login_btn">Login</string>
+    <string name="login_open_register_form_btn">Register</string>
+    <string name="login_email_content_desc">The email address icon</string>
+    <string name="login_pass_content_desc">The password icon</string>
+    <string name="login_email_required">The email address is required</string>
+    <string name="login_pass_required">The password is required</string>
+    <string name="login_success_msg">The login was successful</string>
+    <!--Bampaliaris SPACE (For git conflicts distinguishing)-->
+
 </resources>
