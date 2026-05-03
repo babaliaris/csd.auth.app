@@ -103,7 +103,12 @@ public class LoginActivity extends AppCompatActivity
                 public void onSuccess(String uid)
                 {
                     Toast.makeText(LoginActivity.this, LoginActivity.this.getString(R.string.login_success_msg), Toast.LENGTH_SHORT).show();
-                    // TODO: Navigate to HOME PAGE.
+
+                    // TODO: Go to main menu instead.
+                    // Create an Intent to go from this Activity to Personal Finances Activity.
+                    android.content.Intent intent = new android.content.Intent(LoginActivity.this, PersonalFinancesActivity.class);
+                    startActivity(intent);
+                    finish();
                 }
 
                 @Override
