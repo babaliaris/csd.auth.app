@@ -12,10 +12,17 @@
     <string name="from">From</string>
     <string name="name_of_person_service">Name of Person/Service</string>
     <string name="date">Date</string>
-    <string name="reoccuring_event">Is it a reoccuring event?</string>
-    <string name="multiautocompletetextview">MultiAutoCompleteTextView</string>
+    <string name="reoccurring_event">Is it a reoccurring event?</string>
     <string name="expense_name">Expense name</string>
     <string name="to">To</string>
     <string name="type">Type</string>
+    <string name="shared">Shared</string>
+
+    <string-array name="repeat_when_array">
+        <item>Every day</item>
+        <item>Every week</item>
+        <item>Every month</item>
+        <item>Every year</item>
+    </string-array>
 
 </resources>
