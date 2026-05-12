@@ -6,10 +6,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+
+/**
+ * @author Andreas Galanakis
+ * @version 1.0
+ *
+ * This is the Email Search Dialog class.
+ */
 public class EmailSearchDialog extends BottomSheetDialogFragment {
 
     public interface OnEmailSelectedListener {

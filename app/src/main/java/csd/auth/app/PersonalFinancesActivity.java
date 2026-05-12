@@ -13,7 +13,12 @@ import androidx.core.view.WindowInsetsCompat;
 
 
 
-
+/**
+ * @author Andreas Galanakis
+ * @version 1.0
+ *
+ * This is the Personal finances activity class.
+ */
 public class PersonalFinancesActivity extends AppCompatActivity {
 
 
@@ -32,12 +37,7 @@ public class PersonalFinancesActivity extends AppCompatActivity {
         });
     }
     public void OpenAddIncomeMenu(View view) {
-        Intent i = new Intent(this, AddIncomeActivity.class);
-        startActivity(i);
-    }
-
-    public void OpenAddExpenseMenu(View view) {
-        Intent i = new Intent(this, AddExpenseActivity.class);
+        Intent i = new Intent(this, AddTransactionActivity.class);
         startActivity(i);
     }
 

@@ -28,14 +28,12 @@
             android:exported="false"/>
         <!--Bampaliaris SPACE (For git conflicts distinguishing)-->
 
-        <activity
-            android:name=".AddExpenseActivity"
-            android:exported="false" />
+
         <activity
             android:name=".TransactionHistoryActivity"
             android:exported="false" />
         <activity
-            android:name=".AddIncomeActivity"
+            android:name=".AddTransactionActivity"
             android:exported="true" />
         <activity
             android:name=".PersonalFinancesActivity"

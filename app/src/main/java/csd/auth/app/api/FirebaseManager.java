@@ -284,4 +284,42 @@ public class FirebaseManager
         })
         .addOnFailureListener(e -> callback.onFailure(ApiErrorE.FIREBASE_FIRESTORE_ERROR, e.getMessage()));
     }
+
+    public void addExchange(
+            @NonNull ExchangeModel exchange,
+            @NonNull ApiResultInterface<String> callback
+    )
+    {
+        if (auth.getCurrentUser() == null)
+        {
+            callback.onFailure(
+                    ApiErrorE.USER_NOT_LOGGED_IN,
+                    "User is not logged in."
+            );
+            return;
+        }
+
+        db.collection("exchanges")
+                .add(exchange)
+                .addOnSuccessListener(documentReference ->
+                {
+                    callback.onSuccess(documentReference.getId());
+                })
+                .addOnFailureListener(e ->
+                {
+                    callback.onFailure(
+                            ApiErrorE.FIREBASE_FIRESTORE_ERROR,
+                            e.getMessage()
+                    );
+                });
+    }
+
+    public String getCurrentUserId() {
+        if (auth.getCurrentUser() == null)
+        {
+            return null;
+        }
+
+        return auth.getCurrentUser().getUid();
+    }
 }

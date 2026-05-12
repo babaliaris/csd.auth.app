@@ -9,14 +9,15 @@
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".AddIncomeActivity">
+        tools:context=".AddTransactionActivity">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floatingActionButton2"
+            android:id="@+id/return_floatingActionButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="28dp"
+            android:focusable="true"
             android:onClick="OpenFinancesMenu"
             android:clickable="true"
             app:layout_constraintStart_toStartOf="parent"
@@ -24,20 +25,21 @@
             app:srcCompat="@drawable/baseline_arrow_back_24" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/title_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:text="@string/title"
-            app:layout_constraintBottom_toTopOf="@+id/editTextText"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/title_editText"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/toggleGroup" />
 
         <EditText
-            android:id="@+id/editTextText"
+            android:id="@+id/title_editText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -45,27 +47,28 @@
             android:ems="10"
             android:hint="@string/income_name"
             android:inputType="text"
-            app:layout_constraintBottom_toTopOf="@+id/textView4"
+            app:layout_constraintBottom_toTopOf="@+id/amount_textView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+            app:layout_constraintTop_toBottomOf="@+id/title_textView" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/amount_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:text="@string/amount"
-            app:layout_constraintBottom_toTopOf="@+id/editTextNumberDecimal"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/amount_editTextNumberDecimal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextText" />
+            app:layout_constraintTop_toBottomOf="@+id/title_editText" />
 
         <EditText
-            android:id="@+id/editTextNumberDecimal"
+            android:id="@+id/amount_editTextNumberDecimal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -74,54 +77,56 @@
             android:drawableEnd="@drawable/baseline_euro_24"
             android:ems="10"
             android:inputType="numberDecimal"
-            app:layout_constraintBottom_toTopOf="@+id/checkBox2"
+            app:layout_constraintBottom_toTopOf="@+id/is_shared_checkBox"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+            app:layout_constraintTop_toBottomOf="@+id/amount_textView" />
 
         <TextView
-            android:id="@+id/textView7"
+            android:id="@+id/participant_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:text="@string/from"
-            app:layout_constraintBottom_toTopOf="@+id/editTextText2"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/participant_editTextText"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/checkBox2"
+            app:layout_constraintTop_toBottomOf="@+id/is_shared_checkBox"
             app:layout_constraintVertical_bias="0.414" />
 
         <EditText
-            android:id="@+id/editTextText2"
+            android:id="@+id/participant_editTextText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:ems="10"
-            android:hint="@string/name_of_person_service"
+            android:hint="@string/name_of_service"
             android:inputType="text"
             android:textAlignment="center"
-            app:layout_constraintBottom_toTopOf="@+id/textView8"
+            app:layout_constraintBottom_toTopOf="@+id/date_textView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView7" />
+            app:layout_constraintTop_toBottomOf="@+id/participant_textView" />
 
         <TextView
-            android:id="@+id/textView8"
+            android:id="@+id/date_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:text="@string/date"
+            android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/editTextDate"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextText2" />
+            app:layout_constraintTop_toBottomOf="@+id/participant_editTextText" />
 
         <EditText
             android:id="@+id/editTextDate"
@@ -130,22 +135,24 @@
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:drawableEnd="@drawable/baseline_calendar_month_24"
-            android:editable="false"
+            android:focusable="true"
+            android:clickable="true"
+            android:cursorVisible="false"
             android:ems="10"
-            android:inputType="date"
-            app:layout_constraintBottom_toTopOf="@+id/checkBox"
+            app:layout_constraintBottom_toTopOf="@+id/is_recurring_checkBox"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView8" />
+            app:layout_constraintTop_toBottomOf="@+id/date_textView" />
 
         <CheckBox
-            android:id="@+id/checkBox"
+            android:id="@+id/is_recurring_checkBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:text="@string/reoccurring_event"
+            android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/repeat_when_spinner"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -158,13 +165,13 @@
             android:layout_height="30dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            app:layout_constraintBottom_toTopOf="@+id/floatingActionButton4"
+            app:layout_constraintBottom_toTopOf="@+id/add_exchange_floatingActionButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/checkBox" />
+            app:layout_constraintTop_toBottomOf="@+id/is_recurring_checkBox" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floatingActionButton4"
+            android:id="@+id/add_exchange_floatingActionButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -177,16 +184,66 @@
             app:srcCompat="@android:drawable/ic_input_add" />
 
         <CheckBox
-            android:id="@+id/checkBox2"
+            android:id="@+id/is_shared_checkBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:text="@string/shared"
-            app:layout_constraintBottom_toTopOf="@+id/textView7"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/participant_textView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextNumberDecimal" />
+            app:layout_constraintTop_toBottomOf="@+id/amount_editTextNumberDecimal" />
+
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/toggleGroup"
+            android:layout_width="208dp"
+            android:layout_height="44dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/toggle_container_bg"
+            app:layout_constraintBottom_toTopOf="@+id/title_textView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/transaction_type_textView"
+            app:selectionRequired="true"
+            app:singleSelection="true">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnIncome"
+                style="@style/ToggleButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/income"
+                app:backgroundTint="@color/toggle_bg_color"
+                android:textColor="@color/toggle_text_color"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnExpense"
+                style="@style/ToggleButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/expense"
+                app:backgroundTint="@color/toggle_bg_color"
+                android:textColor="@color/toggle_text_color"/>
+
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+
+        <TextView
+            android:id="@+id/transaction_type_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/select_trans_type"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/toggleGroup"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
