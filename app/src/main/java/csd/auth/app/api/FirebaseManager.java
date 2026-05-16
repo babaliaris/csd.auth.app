@@ -11,7 +11,7 @@ import csd.auth.app.api.models.ExchangeModel;
 
 
 /**
- * @author Nikolaos Bampaliaris
+ * @author Nikolaos Bampaliaris + Andreas Galanakis
  * @version 1.0
  *
  * This is the firebase manager class.
@@ -285,41 +285,57 @@ public class FirebaseManager
         .addOnFailureListener(e -> callback.onFailure(ApiErrorE.FIREBASE_FIRESTORE_ERROR, e.getMessage()));
     }
 
+    /**
+     * Add a new exchange to the database.
+     * @author Andreas Galanakis
+     * @param exchange The exchange to add.
+     * @param callback A callback interface to handle the async result of the operation.
+     */
     public void addExchange(
             @NonNull ExchangeModel exchange,
             @NonNull ApiResultInterface<String> callback
     )
     {
+        // Check if the user is logged in.
         if (auth.getCurrentUser() == null)
         {
             callback.onFailure(
-                    ApiErrorE.USER_NOT_LOGGED_IN,
-                    "User is not logged in."
+                ApiErrorE.USER_NOT_LOGGED_IN,
+                "User is not logged in."
             );
             return;
         }
 
+        // Add the exchange to the database.
         db.collection("exchanges")
-                .add(exchange)
-                .addOnSuccessListener(documentReference ->
-                {
-                    callback.onSuccess(documentReference.getId());
-                })
-                .addOnFailureListener(e ->
-                {
-                    callback.onFailure(
-                            ApiErrorE.FIREBASE_FIRESTORE_ERROR,
-                            e.getMessage()
-                    );
-                });
+        .add(exchange)
+        .addOnSuccessListener(documentReference ->
+        {
+            callback.onSuccess(documentReference.getId());
+        })
+        .addOnFailureListener(e ->
+        {
+            callback.onFailure(
+                ApiErrorE.FIREBASE_FIRESTORE_ERROR,
+                e.getMessage()
+            );
+        });
     }
 
-    public String getCurrentUserId() {
+    /**
+     * Get the current user's UUID.
+     * @author Andreas Galanakis
+     * @return The current user's UUID.
+     */
+    public String getCurrentUserId()
+    {
+        // Check if the user is logged in.
         if (auth.getCurrentUser() == null)
         {
             return null;
         }
 
+        // Return the user's UUID.
         return auth.getCurrentUser().getUid();
     }
 }
