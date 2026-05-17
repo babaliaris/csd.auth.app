@@ -1,5 +1,6 @@
 package csd.auth.app;
 
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -50,6 +51,8 @@ public class AddTransactionActivity extends AppCompatActivity {
     private EditText participant_name_Input;
 
     private EditText dateInput;
+
+    private Timestamp selectedTimestamp;
 
     private MaterialButtonToggleGroup toggleGroup;
 
@@ -177,26 +180,52 @@ public class AddTransactionActivity extends AppCompatActivity {
             int month = calendar.get(Calendar.MONTH);
             int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-            DatePickerDialog dialog = new DatePickerDialog(
+            DatePickerDialog dateDialog = new DatePickerDialog(
                     AddTransactionActivity.this,
                     (view, selectedYear, selectedMonth, selectedDay) -> {
 
-                        String formattedDate = String.format(
-                                Locale.getDefault(),
-                                "%02d-%02d-%04d",
-                                selectedMonth + 1,
-                                selectedDay,
-                                selectedYear
+                        TimePickerDialog timeDialog = new TimePickerDialog(
+                                AddTransactionActivity.this,
+                                (timeView, hourOfDay, minute) -> {
+
+                                    Calendar finalCal = Calendar.getInstance();
+
+                                    finalCal.set(
+                                            selectedYear,
+                                            selectedMonth,
+                                            selectedDay,
+                                            hourOfDay,
+                                            minute,
+                                            0
+                                    );
+
+                                    // SAVE REAL TIMESTAMP HERE
+                                    selectedTimestamp = new Timestamp(finalCal.getTime());
+
+                                    // SHOW USER FRIENDLY TEXT
+                                    String formatted = String.format(
+                                            Locale.getDefault(),
+                                            "%02d-%02d-%04d %02d:%02d",
+                                            selectedDay,
+                                            selectedMonth + 1,
+                                            selectedYear,
+                                            hourOfDay,
+                                            minute
+                                    );
+
+                                    dateInput.setText(formatted);
+                                },
+                                12, 0, true
                         );
 
-                        dateInput.setText(formattedDate);
+                        timeDialog.show();
                     },
                     year,
                     month,
                     day
             );
 
-            dialog.show();
+            dateDialog.show();
         });
 
         FloatingActionButton addBtn = findViewById(R.id.add_exchange_floatingActionButton);
@@ -247,23 +276,12 @@ public class AddTransactionActivity extends AppCompatActivity {
         }
 
         //Convert date string → Timestamp
-        Timestamp timestamp;
-        try
+        Timestamp timestamp = selectedTimestamp;
+
+        if (timestamp == null)
         {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-            Date date = sdf.parse(dateStr);
-            if (date != null)
-            {
-                timestamp = new Timestamp(date);
-            }
-            else
-            {
-                timestamp = Timestamp.now();
-            }
-        }
-        catch (Exception e)
-        {
-            timestamp = Timestamp.now();
+            Toast.makeText(this, "Please select date and time", Toast.LENGTH_SHORT).show();
+            return;
         }
 
         //Read shared / recurring controls
@@ -331,14 +349,14 @@ public class AddTransactionActivity extends AppCompatActivity {
             public void onSuccess(String result) {
                 Toast.makeText(AddTransactionActivity.this,
                         R.string.save_success,
-                        Toast.LENGTH_LONG).show();
+                        Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(ApiErrorE error, String message) {
                 Toast.makeText(AddTransactionActivity.this,
                         R.string.error + message,
-                        Toast.LENGTH_LONG).show();
+                        Toast.LENGTH_SHORT).show();
             }
 
         });

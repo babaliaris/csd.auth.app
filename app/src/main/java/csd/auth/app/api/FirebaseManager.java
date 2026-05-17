@@ -2,8 +2,10 @@ package csd.auth.app.api;
 import androidx.annotation.NonNull;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import csd.auth.app.api.models.UserModel;
@@ -246,13 +248,25 @@ public class FirebaseManager
         this.db.collection("exchanges")
         .whereEqualTo("owner_user_uuid", this.user_uid)
         .get()
-        .addOnSuccessListener(queryDocumentSnapshots ->
-        {
-            List<ExchangeModel> list = queryDocumentSnapshots.toObjects(ExchangeModel.class);
-            callback.onSuccess(list);
-        })
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+
+                    List<ExchangeModel> list = new ArrayList<>();
+
+                    for (DocumentSnapshot doc : queryDocumentSnapshots) {
+
+                        ExchangeModel model = doc.toObject(ExchangeModel.class);
+
+                        if (model != null) {
+                            model.id = doc.getId(); // IMPORTANT: store Firestore document ID
+                            list.add(model);
+                        }
+                    }
+
+                    callback.onSuccess(list);
+                })
         .addOnFailureListener(e -> callback.onFailure(ApiErrorE.FIREBASE_FIRESTORE_ERROR, e.getMessage()));
     }
+
 
 
     /**
@@ -311,6 +325,7 @@ public class FirebaseManager
         .add(exchange)
         .addOnSuccessListener(documentReference ->
         {
+            exchange.id = documentReference.getId();
             callback.onSuccess(documentReference.getId());
         })
         .addOnFailureListener(e ->

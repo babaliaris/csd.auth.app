@@ -56,6 +56,9 @@ public class ExchangeModel
     @PropertyName("debt_user_uuid")
     public String debt_user_uuid;
 
+    /** The Firestore document ID of the exchange. */
+    public String id;
+
     /**
      * Required default constructor for Firestore.
      */

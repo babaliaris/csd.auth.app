@@ -131,7 +131,7 @@ public class RegisterActivity extends AppCompatActivity
                 {
                     // Re-enable button so user can try again
                     binding.registerRegisterBtn.setEnabled(true);
-                    Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_LONG).show();
+                    Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_SHORT).show();
                 }
             });
         });

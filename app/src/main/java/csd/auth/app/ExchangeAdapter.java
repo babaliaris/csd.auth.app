@@ -14,11 +14,21 @@ import csd.auth.app.api.models.ExchangeModel;
  * @author Andreas Galanakis
  * @version 1.0
  *
- * This is the Exchange Adapter Dialog class.
+ * This is the Exchange Adapter class.
  */
 public class ExchangeAdapter extends RecyclerView.Adapter<ExchangeAdapter.ViewHolder> {
 
     private List<ExchangeModel> list;
+
+    public interface OnExchangeClickListener {
+        void onItemClick(ExchangeModel exchange);
+    }
+
+    private OnExchangeClickListener listener;
+
+    public void setOnExchangeClickListener(OnExchangeClickListener listener) {
+        this.listener = listener;
+    }
 
     //Pass data into the adapter
     public ExchangeAdapter(List<ExchangeModel> list) {
@@ -88,6 +98,13 @@ public class ExchangeAdapter extends RecyclerView.Adapter<ExchangeAdapter.ViewHo
         {
             h.recurring.setVisibility(View.GONE);
         }
+
+        h.itemView.setOnClickListener(v -> {
+
+            if (listener != null) {
+                listener.onItemClick(e);
+            }
+        });
     }
 
     // 5

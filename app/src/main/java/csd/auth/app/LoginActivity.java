@@ -116,7 +116,7 @@ public class LoginActivity extends AppCompatActivity
                 {
                     // Re-enable button so user can try again
                     binding.loginLoginBtn.setEnabled(true);
-                    Toast.makeText(LoginActivity.this, message, Toast.LENGTH_LONG).show();
+                    Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
                 }
             });
         });
