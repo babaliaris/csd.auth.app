@@ -347,9 +347,6 @@ public class FirebaseManager
                     {
                         emailList.add(user.email);
                     }
-
-                    // Notify the developer. This should never happen in production!!!
-                    assert user != null && user.email != null && !user.email.isEmpty();
                 }
             }
 
