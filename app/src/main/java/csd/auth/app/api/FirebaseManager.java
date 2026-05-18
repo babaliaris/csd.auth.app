@@ -13,7 +13,7 @@ import csd.auth.app.api.models.ExchangeModel;
 
 
 /**
- * @author Nikolaos Bampaliaris + Andreas Galanakis
+ * @author Nikolaos Bampaliaris
  * @version 1.0
  *
  * This is the firebase manager class.
@@ -55,6 +55,7 @@ public class FirebaseManager
     }
 
     /**
+     * @author Nikolaos Bampaliaris
      * Singleton pattern. We create only one instance of this class
      * and use it across the entire application to communicate
      * with Firebase in the easiest way possible!
@@ -74,6 +75,7 @@ public class FirebaseManager
     }
 
     /**
+     * @author Nikolaos Bampaliaris
      * Registers a new user with the given email and password.
      *
      * @param email The user's email address.
@@ -128,6 +130,7 @@ public class FirebaseManager
     }
 
     /**
+     * @author Nikolaos Bampaliaris
      * Logs in a user with the given email and password.
      *
      * @param email The user's email address.
@@ -177,6 +180,7 @@ public class FirebaseManager
 
 
     /**
+     * @author Nikolaos Bampaliaris
      * Logs out the current user.
      *
      * @param callback A callback interface to handle the async result of the operation.
@@ -197,6 +201,7 @@ public class FirebaseManager
 
 
     /**
+     * @author Nikolaos Bampaliaris
      * Get the current user's information.
      *
      * @param callback A callback interface to handle the async result of the operation.
@@ -226,6 +231,7 @@ public class FirebaseManager
     }
 
     /**
+     * @author Nikolaos Bampaliaris
      * Get all my exchanges.
      *
      * @param callback A callback interface to handle the async result of the operation.
@@ -270,6 +276,7 @@ public class FirebaseManager
 
 
     /**
+     * @author Nikolaos Bampaliaris
      * Get all the exchanges I owe.
      *
      * @param callback A callback interface to handle the async result of the operation.
@@ -298,6 +305,62 @@ public class FirebaseManager
         })
         .addOnFailureListener(e -> callback.onFailure(ApiErrorE.FIREBASE_FIRESTORE_ERROR, e.getMessage()));
     }
+
+
+    /**
+     * @author Nikolaos Bampaliaris
+     * Fetches all user emails from the database, excluding the currently logged-in user.
+     *
+     * @param callback A callback interface to handle the async result containing a list of emails.
+     */
+    public void getAllOtherUserEmails(@NonNull ApiResultInterface<List<String>> callback)
+    {
+        // Check that the user is logged in.
+        String currentUid = this.getCurrentUserId();
+        if (currentUid == null)
+        {
+            callback.onFailure(
+                ApiErrorE.USER_NOT_LOGGED_IN,
+                "User is not logged in."
+            );
+            return;
+        }
+
+        // Query the entire 'users' collection
+        this.db.collection("users")
+        .get()
+        .addOnSuccessListener(queryDocumentSnapshots ->
+        {
+            // Create a list to store the emails.
+            List<String> emailList = new ArrayList<>();
+
+            // For each document in the query result.
+            for (DocumentSnapshot doc : queryDocumentSnapshots)
+            {
+                // Exclude the currently logged-in user by checking document ID (UID)
+                if ( !doc.getId().equals(currentUid) )
+                {
+                    // Convert the document to a UserModel object.
+                    // and add it to the list.
+                    UserModel user = doc.toObject(UserModel.class);
+                    if (user != null && user.email != null && !user.email.isEmpty())
+                    {
+                        emailList.add(user.email);
+                    }
+
+                    // Notify the developer. This should never happen in production!!!
+                    assert user != null && user.email != null && !user.email.isEmpty();
+                }
+            }
+
+            // Return the list of emails to the caller
+            callback.onSuccess(emailList);
+        })
+        .addOnFailureListener(e ->
+                callback.onFailure(ApiErrorE.FIREBASE_FIRESTORE_ERROR, e.getMessage())
+        );
+    }
+
 
     /**
      * Add a new exchange to the database.
