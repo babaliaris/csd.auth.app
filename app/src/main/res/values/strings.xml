@@ -1,46 +1,64 @@
 <resources>
+
+    <!--Galanakis SPACE (For git conflicts distinguishing)-->
+
+
     <string name="app_name">csd.auth.app</string>
-    <string name="add_transaction">Add Transaction</string>
-    <string name="add_income">Add Income</string>
-    <string name="add_expense">Add Expense</string>
-    <string name="view_history">View Transaction History</string>
-    <string name="name">Name</string>
+
+    <!--Personal Finances Activity-->
     <string name="welcome">Welcome,</string>
+    <string name="name">Name</string>
     <string name="balance">Balance:</string>
+    <string name="add_transaction">Add Transaction</string>
+    <string name="view_history">View Transaction History</string>
+    <string name="user">User</string>
+
+    <string name="_0_00">0.00€</string>
+    <string name="incomes">Incomes</string>
+    <string name="expenses">Expenses</string>
+    <string name="owed_to_me">Owed to Me</string>
+    <string name="i_owe">I Owe</string>
+    <string name="back_button">Back button</string>
+
+    <!--Add Transaction Activity-->
+    <string name="select_trans_type">Select Transaction Type</string>
+    <string name="income">Income</string>
+    <string name="expense">Expense</string>
     <string name="title">Title</string>
     <string name="income_name">Income name</string>
+    <string name="expense_name">Expense name</string>
     <string name="amount">Amount</string>
+    <string name="shared">Shared</string>
     <string name="from">From</string>
+    <string name="to">To</string>
     <string name="name_of_service">Name of Service</string>
+    <string name="select_email">Select User (Email)</string>
     <string name="date">Date</string>
     <string name="reoccurring_event">Is it a reoccurring event?</string>
-    <string name="expense_name">Expense name</string>
-    <string name="to">To</string>
-    <string name="type">Type</string>
-    <string name="shared">Shared</string>
-    <string name="transaction_switch">Switch Transaction Type</string>
-    <string name="select_email">Select User (Email)</string>
-    <string name="fill_required_fields">Fill required fields</string>
-    <string name="invalid_amount">Invalid amount</string>
-    <string name="user_not_logged_in">User not logged in</string>
-    <string name="save_success">Saved successfully</string>
-    <string name="error">ERROR: </string>
-    <string name="s_exchanges"> exchanges</string>
-    <string name="loaded">Loaded: </string>
-    <string name="shared_with">Shared with: %1$s</string>
-    <string name="amount_format">%1$s%2$.2f€</string>
-    <string name="repeats_format">Repeats: %1$s</string>
-    <string name="select_trans_type">Select Transaction Type</string>
-    <string name="expense">Expense</string>
-    <string name="income">Income</string>
-    <string name="no_transactions_yet">No transactions yet!</string>
-    <string name="my_past_transactions">My Past Transactions</string>
     <string-array name="repeat_when_array">
         <item>Every day</item>
         <item>Every week</item>
         <item>Every month</item>
         <item>Every year</item>
     </string-array>
+    <string name="fill_required_fields">Fill required fields</string>
+    <string name="invalid_amount">Invalid amount</string>
+    <string name="user_not_logged_in">User not logged in</string>
+    <string name="save_success">Saved successfully</string>
+    <string name="error">ERROR: </string>
+
+
+    <!--Transaction History Activity-->
+    <string name="my_past_transactions">My Past Transactions</string>
+    <string name="no_transactions_yet">No transactions yet!</string>
+    <string name="loaded">Loaded: </string>
+    <string name="s_exchanges"> exchanges</string>
+    <string name="shared_with">Shared with: %1$s</string>
+    <string name="amount_format">%1$s%2$.2f€</string>
+    <string name="repeats_format">Repeats: %1$s</string>
+
+    <!--Galanakis SPACE (For git conflicts distinguishing)-->
+
 
     <!--Bampaliaris SPACE (For git conflicts distinguishing)-->
 
@@ -71,6 +89,8 @@
     <string name="login_email_required">The email address is required</string>
     <string name="login_pass_required">The password is required</string>
     <string name="login_success_msg">The login was successful</string>
+    <string name="add_exchange_button">add_exchange_button</string>
+
 
     <!--Bampaliaris SPACE (For git conflicts distinguishing)-->
 

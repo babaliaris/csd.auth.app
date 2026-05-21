@@ -12,6 +12,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+
 import java.util.List;
 import java.util.Locale;
 
@@ -19,6 +20,7 @@ import csd.auth.app.api.ApiErrorE;
 import csd.auth.app.api.ApiResultInterface;
 import csd.auth.app.api.FirebaseManager;
 import csd.auth.app.api.models.ExchangeModel;
+import csd.auth.app.api.models.UserModel;
 import csd.auth.app.databinding.ActivityPersonalFinancesBinding;
 import csd.auth.app.utils.ExchangeCalculations;
 
@@ -31,7 +33,6 @@ import csd.auth.app.utils.ExchangeCalculations;
  */
 public class PersonalFinancesActivity extends AppCompatActivity
 {
-
     private ActivityPersonalFinancesBinding binding;
 
     @Override
@@ -40,17 +41,67 @@ public class PersonalFinancesActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
 
+        // Inflate the layout using View Binding.
         binding = ActivityPersonalFinancesBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // Add edge to edge support with custom padding.
         ViewCompat.setOnApplyWindowInsetsListener(binding.main, (v, insets) ->
         {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+
+            v.setPadding(
+                    systemBars.left,
+                    systemBars.top,
+                    systemBars.right,
+                    systemBars.bottom
+            );
+
+
             return insets;
         });
 
+        // Call method to calculate and display statistics of the user's past exchanges
         this.loadFinancialDashboardData();
+
+        // Gain access to user's profile information
+        FirebaseManager.getInstance().getMyProfile(new ApiResultInterface<>()
+        {
+            @Override
+            public void onSuccess(UserModel user)
+            {
+
+                // Create a username based on the user's email address
+                // and display it as a welcome greeting in the TextView
+                String email = user.email;
+                if (email != null)
+                {
+                    String username = email.substring(0, email.indexOf("@"));
+                    binding.textView6.setText(username);
+                }
+
+            }
+
+            @Override
+            public void onFailure(ApiErrorE error, String message)
+            {
+                // Assign a fallback username in the TextView
+                // for being denied access to profile information
+                binding.textView6.setText(R.string.user);
+                Toast.makeText(
+                        PersonalFinancesActivity.this,
+                        "Could not load profile",
+                        Toast.LENGTH_SHORT
+                ).show();
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        loadFinancialDashboardData();
     }
 
 

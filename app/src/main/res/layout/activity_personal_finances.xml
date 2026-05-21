@@ -3,7 +3,6 @@
     android:id="@+id/main"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -12,6 +11,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
+        android:contentDescription="@string/back_button"
+        android:focusable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.045"
@@ -35,8 +36,8 @@
 
     <TextView
         android:id="@+id/textView6"
-        android:layout_width="100dp"
-        android:layout_height="26dp"
+        android:layout_width="180dp"
+        android:layout_height="25dp"
         android:text="@string/name"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -72,7 +73,7 @@
             android:id="@+id/tv_net_balance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0.00€"
+            android:text="@string/_0_00"
             android:textColor="#673AB7"
             android:textSize="44sp"
             android:textStyle="bold"
@@ -81,6 +82,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:baselineAligned="false"
             android:orientation="horizontal"
             android:layout_marginBottom="16dp">
 
@@ -93,13 +95,13 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Incomes"
+                    android:text="@string/incomes"
                     android:textSize="12sp" />
                 <TextView
                     android:id="@+id/tv_total_incomes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0.00€"
+                    android:text="@string/_0_00"
                     android:textColor="#4CAF50"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -114,13 +116,13 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Expenses"
+                    android:text="@string/expenses"
                     android:textSize="12sp" />
                 <TextView
                     android:id="@+id/tv_total_expenses"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0.00€"
+                    android:text="@string/_0_00"
                     android:textColor="#F44336"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -130,6 +132,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:baselineAligned="false"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -141,13 +144,13 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Owed to Me"
+                    android:text="@string/owed_to_me"
                     android:textSize="12sp" />
                 <TextView
                     android:id="@+id/tv_owed_to_me"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0.00€"
+                    android:text="@string/_0_00"
                     android:textColor="#009688"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -162,13 +165,13 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="I Owe"
+                    android:text="@string/i_owe"
                     android:textSize="12sp" />
                 <TextView
                     android:id="@+id/tv_total_i_owe"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0.00€"
+                    android:text="@string/_0_00"
                     android:textColor="#FF9800"
                     android:textSize="18sp"
                     android:textStyle="bold" />
