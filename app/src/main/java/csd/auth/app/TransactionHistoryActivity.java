@@ -190,8 +190,8 @@ public class TransactionHistoryActivity extends AppCompatActivity {
     }
 
 
-    public void OpenFinancesMenu(View view) {
-        Intent i = new Intent(this, PersonalFinancesActivity.class);
+    public void OpenStatisticsMenu(View view) {
+        Intent i = new Intent(this, StatisticsActivity.class);
         startActivity(i);
     }
 

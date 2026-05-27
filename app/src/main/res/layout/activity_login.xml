@@ -8,7 +8,6 @@
     android:layout_height="match_parent"
     tools:context=".LoginActivity">
 
-    <!-- Vertical layout centered on the screen -->
     <LinearLayout
         android:id="@+id/login_centered_layout"
         android:layout_width="match_parent"
@@ -28,7 +27,6 @@
             android:textStyle="bold"
             android:layout_marginBottom="32dp"/>
 
-        <!-- Email Layout -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -60,7 +58,6 @@
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
-        <!-- Password Layout-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -92,7 +89,6 @@
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
-        <!-- Side to side buttons -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -118,6 +114,14 @@
                 android:text="@string/login_open_register_form_btn"
                 android:padding="12dp"/>
         </LinearLayout>
+
+        <ImageView
+            android:id="@+id/login_illustration_image"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="32dp"
+            android:src="@drawable/main_menu_picture"
+            android:contentDescription="Financial illustration" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
