@@ -211,11 +211,28 @@ public class AddTransactionActivity extends AppCompatActivity {
             if (!isChecked) return;
 
             if (checkedId == R.id.btnIncome) {
+
                 titleInput.setHint(R.string.income_name);
                 from_to.setText(R.string.from);
-            } else if (checkedId == R.id.btnExpense) {
+
+                // Enable shared checkbox again
+                sharedCheck.setEnabled(true);
+                sharedCheck.setVisibility(View.VISIBLE);
+
+            }
+            else if (checkedId == R.id.btnExpense) {
+
                 titleInput.setHint(R.string.expense_name);
                 from_to.setText(R.string.to);
+
+                // Force shared OFF
+                sharedCheck.setChecked(false);
+
+                // Disable or hide it
+                sharedCheck.setEnabled(false);
+
+                // Optional: completely hide it
+                // sharedCheck.setVisibility(View.GONE);
             }
 
         });
