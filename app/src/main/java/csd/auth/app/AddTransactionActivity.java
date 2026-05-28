@@ -32,6 +32,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.CompletableFuture;
 
 import csd.auth.app.api.ApiErrorE;
 import csd.auth.app.api.ApiResultInterface;
@@ -372,68 +373,105 @@ public class AddTransactionActivity extends AppCompatActivity {
         boolean isShared = sharedCheck.isChecked();
         boolean isRecurring = recurringCheck.isChecked();
 
-        String recurringType = null;
+        String recurringType;
+
         if (isRecurring)
         {
             recurringType = spinner.getSelectedItem().toString();
         }
 
-        // Determine the name of the shared user or service
-        String debtUserUuid = null;
-        String serviceName = null;
-
-        if (isShared)
-        {
-            debtUserUuid = from;
-        }
         else
         {
+            recurringType = null;
+        }
+
+        // Determine the name of the shared user or service
+        String serviceName = null;
+
+        // If is shared, get the UUID of the user and store it in debtUserUuid.
+        CompletableFuture<String> uuidFuture = new CompletableFuture<>();
+        if (isShared)
+        {
+            // Execute the API call.
+            FirebaseManager.getInstance().getUserUUIDByEmail(from, new ApiResultInterface<>()
+            {
+                @Override
+                public void onSuccess(String uuid)
+                {
+                    uuidFuture.complete(uuid);
+                }
+
+                @Override
+                public void onFailure(ApiErrorE error, String error_message)
+                {
+                    uuidFuture.completeExceptionally(new Exception(error_message));
+                }
+            });
+        }
+
+        else
+        {
+            uuidFuture.complete(null);
             serviceName = from;
         }
 
-        // Build exchange model
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        final String finalServiceName = serviceName;
 
-        if (currentUser == null)
+        // This code will wait until uuidFuture is completed (asynchronously).
+        uuidFuture.thenAccept(resolvedUuid ->
         {
-            Toast.makeText(this,
-                    R.string.user_not_logged_in,
-                    Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        String ownerId = currentUser.getUid();
-
-        ExchangeModel exchange = new ExchangeModel(
-                title,
-                side,
-                amount,
-                timestamp,
-                ownerId,
-                isShared,
-                debtUserUuid,
-                isRecurring,
-                recurringType,
-                serviceName
-        );
-
-        // Send to Firebase
-        firebaseManager.addExchange(exchange, new ApiResultInterface<>() {
-            @Override
-            public void onSuccess(String result) {
-
-                Toast.makeText(AddTransactionActivity.this,
-                        R.string.save_success,
-                        Toast.LENGTH_SHORT).show();
+            // Build the exchange model.
+            FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+            if (currentUser == null)
+            {
+                runOnUiThread(() -> Toast.makeText(
+                        AddTransactionActivity.this,
+                        R.string.user_not_logged_in,
+                        Toast.LENGTH_SHORT).show());
+                return;
             }
 
-            @Override
-            public void onFailure(ApiErrorE error, String message) {
-                Toast.makeText(AddTransactionActivity.this,
-                        R.string.error + message,
-                        Toast.LENGTH_SHORT).show();
-            }
+            // Get the current user's UUID.
+            String ownerId = currentUser.getUid();
 
+            // Create the exchange model.
+            ExchangeModel exchange = new ExchangeModel(
+                    title,
+                    side,
+                    amount,
+                    timestamp,
+                    ownerId,
+                    isShared,
+                    resolvedUuid,
+                    isRecurring,
+                    recurringType,
+                    finalServiceName
+            );
+
+            // Send it to Firebase
+            firebaseManager.addExchange(exchange, new ApiResultInterface<String>()
+            {
+                @Override
+                public void onSuccess(String result)
+                {
+                    Toast.makeText(AddTransactionActivity.this, R.string.save_success, Toast.LENGTH_SHORT).show();
+                    finish(); // Smoothly returns the user to the main screen
+                }
+
+                @Override
+                public void onFailure(ApiErrorE error, String message)
+                {
+                    Toast.makeText(AddTransactionActivity.this, R.string.error + message, Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        }).exceptionally(throwable ->
+        {
+            runOnUiThread(() -> Toast.makeText(
+                    AddTransactionActivity.this,
+                    getString(R.string.error) + " " + throwable.getMessage(),
+                    Toast.LENGTH_SHORT).show());
+            return null;
         });
     }
 

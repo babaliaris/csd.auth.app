@@ -413,4 +413,35 @@ public class FirebaseManager
         // Return the user's UUID.
         return auth.getCurrentUser().getUid();
     }
+
+
+    /**
+     * @author Nikolaos Bampaliaris
+     * Fetches a user's UUID by their email.
+     *
+     * @param callback A callback interface to handle the async result containing the user's UUID.
+     */
+    public void getUserUUIDByEmail(@NonNull String email, @NonNull ApiResultInterface<String> callback)
+    {
+        this.db.collection("users")
+        .whereEqualTo("email", email)
+        .get()
+        .addOnSuccessListener(queryDocumentSnapshots ->
+        {
+            // User email found.
+            if (!queryDocumentSnapshots.isEmpty())
+            {
+                // Extract the document ID (which equals their Authentication UID)
+                String uid = queryDocumentSnapshots.getDocuments().get(0).getId();
+                callback.onSuccess(uid);
+            }
+
+            // User email not found.
+            else
+            {
+                callback.onFailure(ApiErrorE.FIREBASE_FIRESTORE_ERROR, "User profile not found (Check the email address).");
+            }
+        })
+        .addOnFailureListener(e -> callback.onFailure(ApiErrorE.FIREBASE_FIRESTORE_ERROR, e.getMessage()));
+    }
 }
