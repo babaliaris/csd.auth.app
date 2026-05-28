@@ -174,6 +174,11 @@ public class PersonalFinancesActivity extends AppCompatActivity {
         startActivity(i);
     }
 
+    public void OpenAuthMenu(View view) {
+        Intent i = new Intent(this, LoginActivity.class);
+        startActivity(i);
+    }
+
 
 // Made by Nikolaos Karapatsias
     private class BalanceGraphView extends View
