@@ -1,7 +1,15 @@
 <resources>
 
-    <!--Galanakis SPACE (For git conflicts distinguishing)-->
+    <!--Karapatsias SPACE (For git conflicts distinguishing)-->
+    <!-- This array is used for the scolldown component in the statistics activity-->
+    <string-array name="time_period_options">
+        <item>Last Month</item>
+        <item>Last 3 Months</item>
+        <item>Custom Dates</item>
+    </string-array>
+    <!--Karapatsias SPACE (For git conflicts distinguishing)-->
 
+    <!--Galanakis SPACE (For git conflicts distinguishing)-->
 
     <string name="app_name">csd.auth.app</string>
 

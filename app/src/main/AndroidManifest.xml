@@ -33,6 +33,9 @@
             android:name=".TransactionHistoryActivity"
             android:exported="false" />
         <activity
+            android:name=".StatisticsActivity"
+            android:exported="false" />
+        <activity
             android:name=".AddTransactionActivity"
             android:exported="true" />
         <activity
