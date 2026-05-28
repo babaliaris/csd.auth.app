@@ -11,14 +11,14 @@
 
     <!--Galanakis SPACE (For git conflicts distinguishing)-->
 
-    <string name="app_name">csd.auth.app</string>
+    <string name="app_name">PayMate</string>
 
     <!--Personal Finances Activity-->
     <string name="welcome">Welcome,</string>
     <string name="name">Name</string>
     <string name="balance">Balance:</string>
     <string name="add_transaction">Add Transaction</string>
-    <string name="view_history">View Transaction History</string>
+    <string name="view_statistics">View Statistics</string>
     <string name="user">User</string>
 
     <string name="_0_00">0.00€</string>
@@ -42,13 +42,14 @@
     <string name="name_of_service">Name of Service</string>
     <string name="select_email">Select User (Email)</string>
     <string name="date">Date</string>
-    <string name="reoccurring_event">Is it a reoccurring event?</string>
+    <string name="reoccurring_event">Is it a recurring event?</string>
     <string-array name="repeat_when_array">
         <item>Every day</item>
         <item>Every week</item>
         <item>Every month</item>
         <item>Every year</item>
     </string-array>
+    <string name="add_exchange_button">add_exchange_button</string>
     <string name="fill_required_fields">Fill required fields</string>
     <string name="invalid_amount">Invalid amount</string>
     <string name="user_not_logged_in">User not logged in</string>
@@ -97,7 +98,7 @@
     <string name="login_email_required">The email address is required</string>
     <string name="login_pass_required">The password is required</string>
     <string name="login_success_msg">The login was successful</string>
-    <string name="add_exchange_button">add_exchange_button</string>
+
 
 
     <!--Bampaliaris SPACE (For git conflicts distinguishing)-->
