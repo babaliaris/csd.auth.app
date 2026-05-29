@@ -39,6 +39,7 @@ import csd.auth.app.api.ApiErrorE;
 import csd.auth.app.api.ApiResultInterface;
 import csd.auth.app.api.FirebaseManager;
 import csd.auth.app.api.models.ExchangeModel;
+import csd.auth.app.api.models.UserModel;
 
 public class StatisticsActivity extends AppCompatActivity {
 
@@ -386,7 +387,71 @@ public class StatisticsActivity extends AppCompatActivity {
 
             if (e.is_shared)
             {
-                h.participant.setText("Shared with: " + e.debt_user_uuid);
+                if (e.debt_user_uuid != null && !e.debt_user_uuid.isEmpty())
+                {
+                    // Tag the view holder's root layout with the expected UUID for this specific row position.
+                    h.itemView.setTag(e.debt_user_uuid);
+
+                    // Clear old recycled text out immediately with a temporary loading indicator.
+                    h.participant.setText("Shared with: Loading...");
+
+                    // Request the data from Firebase Manager.
+                    firebaseManager.getUserProfileByUUID(e.debt_user_uuid, new ApiResultInterface<UserModel>()
+                    {
+                        @Override
+                        public void onSuccess(UserModel user)
+                        {
+                            // Check that the UUID is still the same (using the tag help identifier).
+                            if (e.debt_user_uuid.equals(h.itemView.getTag()))
+                            {
+                                // User email found.
+                                if (user != null && user.email != null)
+                                {
+                                    h.participant.setText("Shared with: " + user.email);
+                                }
+
+                                // Just a fallback for old shared entries.
+                                // (A bug where dept_user_uuid contained the email instead of the uuid).
+                                else if (e.debt_user_uuid.contains("@"))
+                                {
+                                    // Fallback for your legacy test data bug
+                                    h.participant.setText("Shared with: " + e.debt_user_uuid);
+                                }
+
+                                //Email not found.
+                                else
+                                {
+                                    h.participant.setText("Shared with: Unknown User");
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(ApiErrorE error, String error_message)
+                        {
+                            // For the tagged position.
+                            if (e.debt_user_uuid.equals(h.itemView.getTag()))
+                            {
+                                // Even if Firestore fails/errs out, check if it's a legacy email string
+                                if (e.debt_user_uuid.contains("@"))
+                                {
+                                    h.participant.setText("Shared with: " + e.debt_user_uuid);
+                                }
+
+                                // Else show an error.
+                                else
+                                {
+                                    h.participant.setText("Shared with: Error fetching email");
+                                }
+                            }
+                        }
+                    });
+                }
+
+                else
+                {
+                    h.participant.setText("Shared with: N/A");
+                }
             }
 
             else
