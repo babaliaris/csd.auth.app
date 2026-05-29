@@ -111,17 +111,19 @@ public class PersonalFinancesActivity extends AppCompatActivity {
      * Handles pulling data streams out of Firestore collections asynchronously
      * to perform local dashboard metric aggregation.
      */
-    private void loadFinancialDashboardData() {
+    private void loadFinancialDashboardData()
+    {
         FirebaseManager manager = FirebaseManager.getInstance();
 
         // Load Personal Exchanges (Owner scope)
-        manager.getMyExchanges(new ApiResultInterface<List<ExchangeModel>>() {
+        manager.getMyExchanges(new ApiResultInterface<List<ExchangeModel>>()
+        {
             @Override
             public void onSuccess(List<ExchangeModel> myExchanges) {
                 // Run localized computations using static utility logic
-                double incomes = ExchangeCalculations.calculateTotalIncomes(myExchanges);
+                double incomes  = ExchangeCalculations.calculateTotalIncomes(myExchanges);
                 double expenses = ExchangeCalculations.calculateTotalExpenses(myExchanges);
-                double balance = ExchangeCalculations.calculateNetBalance(myExchanges);
+                double balance  = ExchangeCalculations.calculateNetBalance(myExchanges);
                 double owedToMe = ExchangeCalculations.calculateTotalOwedToMe(myExchanges);
 
                 // Update UI Nodes safely
@@ -143,28 +145,32 @@ public class PersonalFinancesActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(ApiErrorE error, String error_message) {
+            public void onFailure(ApiErrorE error, String error_message)
+            {
                 Toast.makeText(
-                                PersonalFinancesActivity.this,
-                                "Error fetching personal history: " + error_message, Toast.LENGTH_SHORT)
-                        .show();
+                        PersonalFinancesActivity.this,
+                        "Error fetching personal history: " + error_message, Toast.LENGTH_SHORT
+                        ).show();
             }
         });
 
         // Load Debt Records (Debtor scope)
-        manager.getExchangesIOwe(new ApiResultInterface<List<ExchangeModel>>() {
+        manager.getExchangesIOwe(new ApiResultInterface<List<ExchangeModel>>()
+        {
             @Override
-            public void onSuccess(List<ExchangeModel> exchangesIOwe) {
+            public void onSuccess(List<ExchangeModel> exchangesIOwe)
+            {
                 double iOwe = ExchangeCalculations.calculateTotalIOwe(exchangesIOwe);
                 binding.tvTotalIOwe.setText(String.format(Locale.getDefault(), "%.2f€", iOwe));
             }
 
             @Override
-            public void onFailure(ApiErrorE error, String error_message) {
+            public void onFailure(ApiErrorE error, String error_message)
+            {
                 Toast.makeText(
-                                PersonalFinancesActivity.this,
-                                "Error fetching debt profiles: " + error_message, Toast.LENGTH_SHORT)
-                        .show();
+                        PersonalFinancesActivity.this,
+                        "Error fetching debt profiles: " + error_message, Toast.LENGTH_SHORT
+                        ).show();
             }
         });
     }
@@ -181,6 +187,11 @@ public class PersonalFinancesActivity extends AppCompatActivity {
 
     public void OpenAddIncomeMenu(View view) {
         Intent i = new Intent(this, AddTransactionActivity.class);
+        startActivity(i);
+    }
+
+    public void OpenAuthMenu(View view) {
+        Intent i = new Intent(this, LoginActivity.class);
         startActivity(i);
     }
 
