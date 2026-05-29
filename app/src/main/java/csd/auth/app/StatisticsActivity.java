@@ -105,6 +105,7 @@ public class StatisticsActivity extends AppCompatActivity {
                 filterAndDisplayExchanges();
             }
         });
+
         // Setup the date spinner
         timePeriodSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
@@ -258,44 +259,6 @@ public class StatisticsActivity extends AppCompatActivity {
             recyclerViewStats.setVisibility(View.VISIBLE);
         }
     }
-    private void drawGraphs()
-    {
-        graphsContainer.removeAllViews();
-
-        List<ExchangeModel> graphData = new ArrayList<>();
-        for (ExchangeModel e : allExchanges)
-        {
-            boolean matchesDate = true;
-
-            if (startingDateTimestamp > 0 && endingDateTimestamp > 0)
-            {
-                if (e.date_time != null)
-                {
-                    long transactionTime = e.date_time.toDate().getTime();
-
-                    if (transactionTime < startingDateTimestamp || transactionTime > endingDateTimestamp)
-                    {
-                        matchesDate = false;
-                    }
-                }
-            }
-
-            if (matchesDate)
-            {
-                graphData.add(e);
-            }
-        }
-
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1.0f);
-
-        params.setMargins(16, 16, 16, 16);
-
-        SimpleGraphView incomesGraph = new SimpleGraphView(this, graphData, true, startingDateTimestamp, endingDateTimestamp);
-        SimpleGraphView expensesGraph = new SimpleGraphView(this, graphData, false, startingDateTimestamp, endingDateTimestamp);
-
-        graphsContainer.addView(incomesGraph, params);
-        graphsContainer.addView(expensesGraph, params);
-    }
 
     // Function to show the calendar for the custom start date picker
     private void showStartDatePicker()
@@ -355,7 +318,7 @@ public class StatisticsActivity extends AppCompatActivity {
         endDateDialog.show();
     }
 
-    // Calculating the actual date margin and printing it to the ui
+
     private void processSelectedDates()
     {
         if (startDateCalendar != null && endDateCalendar != null)
@@ -465,11 +428,53 @@ public class StatisticsActivity extends AppCompatActivity {
         }
     }
 
+
     // Manage button
     public void OpenTransactionHistoryMenu(View view)
     {
         Intent i = new Intent(this, TransactionHistoryActivity.class);
         startActivity(i);
+    }
+
+
+
+    private void drawGraphs()
+    {
+        graphsContainer.removeAllViews();
+
+        List<ExchangeModel> graphData = new ArrayList<>();
+        for (ExchangeModel e : allExchanges)
+        {
+            boolean matchesDate = true;
+
+            if (startingDateTimestamp > 0 && endingDateTimestamp > 0)
+            {
+                if (e.date_time != null)
+                {
+                    long transactionTime = e.date_time.toDate().getTime();
+
+                    if (transactionTime < startingDateTimestamp || transactionTime > endingDateTimestamp)
+                    {
+                        matchesDate = false;
+                    }
+                }
+            }
+
+            if (matchesDate)
+            {
+                graphData.add(e);
+            }
+        }
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1.0f);
+
+        params.setMargins(16, 16, 16, 16);
+
+        Graph incomesGraph = new Graph(this, graphData, true, startingDateTimestamp, endingDateTimestamp);
+        Graph expensesGraph = new Graph(this, graphData, false, startingDateTimestamp, endingDateTimestamp);
+
+        graphsContainer.addView(incomesGraph, params);
+        graphsContainer.addView(expensesGraph, params);
     }
 
     // Function to set each point of the graph in case the user chooses one
@@ -486,7 +491,7 @@ public class StatisticsActivity extends AppCompatActivity {
     }
 
     // Graphs class
-    private class SimpleGraphView extends View
+    private class Graph extends View
     {
         private List<ExchangeModel> items;
         private boolean isIncome;
@@ -497,7 +502,7 @@ public class StatisticsActivity extends AppCompatActivity {
         private List<DrawnPoint> drawnPoints = new ArrayList<>();
         private DrawnPoint selectedPoint = null;
 
-        public SimpleGraphView(Context context, List<ExchangeModel> data, boolean isIncome, long st, long et)
+        public Graph(Context context, List<ExchangeModel> data, boolean isIncome, long st, long et)
         {
             super(context);
             this.isIncome = isIncome;
