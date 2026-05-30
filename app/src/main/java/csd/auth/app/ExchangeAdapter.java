@@ -37,7 +37,8 @@ public class ExchangeAdapter extends RecyclerView.Adapter<ExchangeAdapter.ViewHo
     /**
      * Interface used to handle click events on a single exchange item.
      */
-    public interface OnExchangeClickListener {
+    public interface OnExchangeClickListener
+    {
         void onItemClick(ExchangeModel exchange);
     }
 
@@ -46,12 +47,14 @@ public class ExchangeAdapter extends RecyclerView.Adapter<ExchangeAdapter.ViewHo
      *
      * @param list List of ExchangeModel objects
      */
-    public ExchangeAdapter(List<ExchangeModel> list) {
+    public ExchangeAdapter(List<ExchangeModel> list)
+    {
         this.list = list;
     }
 
     // 2
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder
+    {
 
         TextView title, amount, date, participant, recurring;
 
@@ -80,7 +83,8 @@ public class ExchangeAdapter extends RecyclerView.Adapter<ExchangeAdapter.ViewHo
      */
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
+    {
 
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.exchange_item, parent, false);
@@ -217,12 +221,14 @@ public class ExchangeAdapter extends RecyclerView.Adapter<ExchangeAdapter.ViewHo
         return list.size();
     }
 
+
     /**
      * Updates the dataset of the adapter and refreshes the RecyclerView.
      *
      * @param newList New list of ExchangeModel objects
      */
-    public void updateList(List<ExchangeModel> newList) {
+    public void updateList(List<ExchangeModel> newList)
+    {
         this.list = newList;
         notifyDataSetChanged();
     }

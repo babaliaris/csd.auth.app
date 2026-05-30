@@ -46,6 +46,14 @@ import csd.auth.app.utils.ExchangeCalculations;
 public class PersonalFinancesActivity extends AppCompatActivity {
     private ActivityPersonalFinancesBinding binding;
 
+    /**
+     * @author Andreas Galanakis
+     * Initializes the PersonalFinancesActivity when it is created.
+     * Sets up the UI using View Binding, applies edge-to-edge layout configuration,
+     * loads financial dashboard data, and retrieves the user's profile information
+     * from Firebase to personalize the interface.
+     */
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -175,10 +183,7 @@ public class PersonalFinancesActivity extends AppCompatActivity {
         });
     }
 
-    /**
-     * @author Nikolaos Karapatsias
-     *Prints out the statistics graph of the income for the last 6 months
-     */
+
     // Buttons related functions
     public void OpenStatisticsMenu(View view) {
         Intent i = new Intent(this, StatisticsActivity.class);
@@ -194,6 +199,13 @@ public class PersonalFinancesActivity extends AppCompatActivity {
         Intent i = new Intent(this, LoginActivity.class);
         startActivity(i);
     }
+
+
+
+    /**
+     * @author Nikolaos Karapatsias
+     * Prints out the statistics graph of the income for the last 6 months
+     */
 
 
     // Graph

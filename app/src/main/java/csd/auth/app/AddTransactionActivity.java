@@ -120,7 +120,8 @@ public class AddTransactionActivity extends AppCompatActivity {
                 // Call method that returns a list with all the registered user email addresses
                 FirebaseManager.getInstance().getAllOtherUserEmails(new ApiResultInterface<>() {
                     @Override
-                    public void onSuccess(List<String> emails) {
+                    public void onSuccess(List<String> emails)
+                    {
 
                         // Create adapter for converting the email list into visual dropdown items
                         ArrayAdapter<String> adapter = new ArrayAdapter<>(
@@ -148,7 +149,8 @@ public class AddTransactionActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onFailure(ApiErrorE error, String message) {
+                    public void onFailure(ApiErrorE error, String message)
+                    {
                         Toast.makeText(AddTransactionActivity.this, message, Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -210,7 +212,8 @@ public class AddTransactionActivity extends AppCompatActivity {
 
             if (!isChecked) return;
 
-            if (checkedId == R.id.btnIncome) {
+            if (checkedId == R.id.btnIncome)
+            {
 
                 titleInput.setHint(R.string.income_name);
                 from_to.setText(R.string.from);
@@ -220,7 +223,8 @@ public class AddTransactionActivity extends AppCompatActivity {
                 sharedCheck.setVisibility(View.VISIBLE);
 
             }
-            else if (checkedId == R.id.btnExpense) {
+            else if (checkedId == R.id.btnExpense)
+            {
 
                 titleInput.setHint(R.string.expense_name);
                 from_to.setText(R.string.to);
@@ -337,7 +341,8 @@ public class AddTransactionActivity extends AppCompatActivity {
 
         // Check for missing entry fields before creating the exchange
         // and have an error message displayed in that instance
-        if (title.isEmpty() || amountStr.isEmpty()) {
+        if (title.isEmpty() || amountStr.isEmpty())
+        {
             Toast.makeText(this, R.string.fill_required_fields, Toast.LENGTH_SHORT).show();
             return;
         }
@@ -492,7 +497,8 @@ public class AddTransactionActivity extends AppCompatActivity {
         });
     }
 
-    public void OpenFinancesMenu(View view) {
+    public void OpenFinancesMenu(View view)
+    {
         Intent i = new Intent(this, PersonalFinancesActivity.class);
         startActivity(i);
     }
