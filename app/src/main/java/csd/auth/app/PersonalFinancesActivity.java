@@ -76,6 +76,8 @@ public class PersonalFinancesActivity extends AppCompatActivity {
         FirebaseManager.getInstance().getMyProfile(new ApiResultInterface<UserModel>() {
             @Override
             public void onSuccess(UserModel user) {
+                // Create a username based on the user's email address
+                // and display it as a welcome greeting in the TextView
                 String email = user.email;
                 if (email != null) {
                     String username = email.substring(0, email.indexOf("@"));
@@ -85,6 +87,9 @@ public class PersonalFinancesActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(ApiErrorE error, String message) {
+
+                // Assign a fallback username in the TextView
+                // for being denied access to profile information
                 binding.textView6.setText(R.string.user);
                 Toast.makeText(
                         PersonalFinancesActivity.this,
@@ -134,8 +139,8 @@ public class PersonalFinancesActivity extends AppCompatActivity {
                 long startTimestamp = cal.getTimeInMillis();
 
                 binding.graphContainer.removeAllViews();
-                BalanceGraphView balanceGraph = new BalanceGraphView(PersonalFinancesActivity.this, myExchanges, startTimestamp, endTimestamp);
-                binding.graphContainer.addView(balanceGraph);
+                Graph Graph = new Graph(PersonalFinancesActivity.this, myExchanges, startTimestamp, endTimestamp);
+                binding.graphContainer.addView(Graph);
                 // Added by Karapatsias
             }
 
@@ -170,6 +175,11 @@ public class PersonalFinancesActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * @author Nikolaos Karapatsias
+     *Prints out the statistics graph of the income for the last 6 months
+     */
+    // Buttons related functions
     public void OpenStatisticsMenu(View view) {
         Intent i = new Intent(this, StatisticsActivity.class);
         startActivity(i);
@@ -186,23 +196,23 @@ public class PersonalFinancesActivity extends AppCompatActivity {
     }
 
 
-// Made by Nikolaos Karapatsias
-    private class BalanceGraphView extends View
+    // Graph
+    private class Graph extends View
     {
-        private List<BalancePoint> points; // Points presented in the graph
+        private List<DrawnPoint> points; // Points presented in the graph
         private long startTime, endTime; // Timestamps for the graph timeline
         private Paint linePaint, axisPaint, textPaint, pointPaint, gridPaint, zeroLinePaint, tooltipBgPaint, tooltipTextPaint; // Holding the colors of each element in the graph
-        private BalancePoint selectedPoint = null; // Helper var to print selected dot
+        private DrawnPoint selectedPoint = null; // Helper var to print selected dot
 
         // Helping class to hold each dot's data
-        private class BalancePoint
+        private class DrawnPoint
         {
             ExchangeModel model;
             float balance;
             long timestamp;
             float cx, cy;
 
-            BalancePoint(ExchangeModel m, float b, long t)
+            DrawnPoint(ExchangeModel m, float b, long t)
             {
                 this.model = m;
                 this.balance = b;
@@ -211,7 +221,7 @@ public class PersonalFinancesActivity extends AppCompatActivity {
         }
 
         // Initializing the graph
-        public BalanceGraphView(Context context, List<ExchangeModel> data, long st, long et)
+        public Graph(Context context, List<ExchangeModel> data, long st, long et)
         {
             super(context);
             this.startTime = st;
@@ -252,7 +262,7 @@ public class PersonalFinancesActivity extends AppCompatActivity {
 
                     if (t >= this.startTime && t <= this.endTime)
                     {
-                        this.points.add(new BalancePoint(e, currentBalance, t));
+                        this.points.add(new DrawnPoint(e, currentBalance, t));
                     }
                 }
             }
@@ -311,7 +321,7 @@ public class PersonalFinancesActivity extends AppCompatActivity {
                 float touchY = event.getY();
                 boolean pointFound = false;
 
-                for (BalancePoint p : points)
+                for (DrawnPoint p : points)
                 {
                     float dx = touchX - p.cx;
                     float dy = touchY - p.cy;
@@ -358,7 +368,7 @@ public class PersonalFinancesActivity extends AppCompatActivity {
             float maxVal = Float.NEGATIVE_INFINITY;
             float minVal = Float.POSITIVE_INFINITY;
 
-            for (BalancePoint p : points)
+            for (DrawnPoint p : points)
             {
                 if (p.balance > maxVal) maxVal = p.balance;
                 if (p.balance < minVal) minVal = p.balance;
@@ -400,7 +410,7 @@ public class PersonalFinancesActivity extends AppCompatActivity {
 
             float prevX = -1, prevY = -1;
 
-            for (BalancePoint p : points)
+            for (DrawnPoint p : points)
             {
                 p.cx = padding + ((p.timestamp - startTime) / xRange) * (width - 2 * padding);
                 p.cy = (height - padding) - ((p.balance - minVal) / yRange) * (height - 2 * padding);

@@ -254,22 +254,22 @@ public class FirebaseManager
         this.db.collection("exchanges")
         .whereEqualTo("owner_user_uuid", this.user_uid)
         .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
+        .addOnSuccessListener(queryDocumentSnapshots -> {
 
-                    List<ExchangeModel> list = new ArrayList<>();
+            List<ExchangeModel> list = new ArrayList<>();
 
-                    for (DocumentSnapshot doc : queryDocumentSnapshots) {
+            for (DocumentSnapshot doc : queryDocumentSnapshots) {
 
-                        ExchangeModel model = doc.toObject(ExchangeModel.class);
+                ExchangeModel model = doc.toObject(ExchangeModel.class);
 
-                        if (model != null) {
-                            model.id = doc.getId(); // IMPORTANT: store Firestore document ID
-                            list.add(model);
-                        }
-                    }
+                if (model != null) {
+                    model.id = doc.getId(); // IMPORTANT: store Firestore document ID
+                    list.add(model);
+                }
+            }
 
-                    callback.onSuccess(list);
-                })
+            callback.onSuccess(list);
+        })
         .addOnFailureListener(e -> callback.onFailure(ApiErrorE.FIREBASE_FIRESTORE_ERROR, e.getMessage()));
     }
 
@@ -441,6 +441,28 @@ public class FirebaseManager
             {
                 callback.onFailure(ApiErrorE.FIREBASE_FIRESTORE_ERROR, "User profile not found (Check the email address).");
             }
+        })
+        .addOnFailureListener(e -> callback.onFailure(ApiErrorE.FIREBASE_FIRESTORE_ERROR, e.getMessage()));
+    }
+
+
+
+    /**
+     * @author Nikolaos Bampaliaris
+     * Get the profile of a specified user by their UUID.
+     *
+     * @param callback A callback interface to handle the async result of the operation.
+     */
+    public void getUserProfileByUUID(
+            @NonNull String uuid,
+            @NonNull ApiResultInterface<UserModel> callback
+    )
+    {
+        this.db.collection("users").document(uuid).get()
+        .addOnSuccessListener(documentSnapshot ->
+        {
+            UserModel user = documentSnapshot.toObject(UserModel.class);
+            callback.onSuccess(user);
         })
         .addOnFailureListener(e -> callback.onFailure(ApiErrorE.FIREBASE_FIRESTORE_ERROR, e.getMessage()));
     }
